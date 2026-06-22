@@ -47,8 +47,6 @@ def server_login():
 
             
         elif user.get("username")==login_username and user.get("password")==login_password:
-  
-            
             return {
                 "message": "Login Success"
             },200
