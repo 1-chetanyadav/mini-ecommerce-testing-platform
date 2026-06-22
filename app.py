@@ -44,8 +44,14 @@ def server_login():
                         return {
                 "message": "Incorrect Username"
             },401
-
-            
+        elif user.get("username")=="" and user.get("password")==login_password:
+                        return {
+                "message": "Missing Username"
+            },401        
+        elif user.get("username")!=login_username and user.get("password")=="":
+                        return {
+                "message": "Missing Password"
+            },401            
         elif user.get("username")==login_username and user.get("password")==login_password:
             return {
                 "message": "Login Success"
