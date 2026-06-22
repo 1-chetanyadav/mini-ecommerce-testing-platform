@@ -6,6 +6,24 @@ def login(payload):
     # print("payload:",payload)
     return requests.post("http://127.0.0.1:5000/login",json=payload)
 
+def test_empty_username():
+    test_data = {
+        "username":"",
+        "password":"rocky123"
+        }
+    response = login(test_data)
+    assert response.status_code == 400
+test_empty_username()    
+
+def test_empty_password():
+    test_data = {
+        "username":"rocky",
+        "password":""
+        }
+    response = login(test_data)
+    assert response.status_code == 400
+test_empty_password()
+
 
 def test_invalid_username():
     test_data = {
@@ -23,7 +41,7 @@ def test_invalid_password():
         "password":"rrocky123"
     }
     response = login(test_data)
-    assert response.status_code==401
+    assert response.status_code == 401
 test_invalid_password()
 
 def test_invalid_user_pass():
@@ -44,5 +62,5 @@ def test_valid_user_pass():
         "password":"rocky123"
     }
     response = login(test_data)
-    assert response.status_code==200
+    assert response.status_code == 200
 test_valid_user_pass()

@@ -34,24 +34,22 @@ def server_login():
         },401
     login_username = data.get("username")
     login_password = data.get("password")
+    
+    if login_username=="":
+        return {"message":"Missing Username"},400
+    if login_password=="":
+        return {"message":"Missing Password"},400
 
     for user in users:
         if user.get("username")==login_username and user.get("password")!=login_password:
-                        return {
+            return {
                 "message": "Incorrect Password"
             },401
         elif user.get("username")!=login_username and user.get("password")==login_password:
-                        return {
+            return {
                 "message": "Incorrect Username"
             },401
-        elif user.get("username")=="" and user.get("password")==login_password:
-                        return {
-                "message": "Missing Username"
-            },401        
-        elif user.get("username")!=login_username and user.get("password")=="":
-                        return {
-                "message": "Missing Password"
-            },401            
+        
         elif user.get("username")==login_username and user.get("password")==login_password:
             return {
                 "message": "Login Success"
