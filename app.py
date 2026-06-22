@@ -12,6 +12,11 @@ def load_users():
         users = json.load(userfile)   
     return users
 
+def load_products():
+    with open("data/product.json",'r') as productfile:
+            products =json.load(productfile)
+            return products
+
 @app.route("/")
 def home():
     # with open("data/users.json",'r') as userfile:
@@ -58,7 +63,34 @@ def server_login():
         "message": "Incorrect Username and Password"
         },401
 
+@app.route("/products", methods=["POST"])
 
+def server_products():
+    products = load_products()
+    data = request.get_json()
+    buy_user = data.get("username")
+    product_price = 0
+    
+    
+    for product in products:
+        if product.get("productid")==data.get("product_id"):
+            product_price = product.get("price")
+            break
+            
+    users = load_users()
+    print("Buy User:", buy_user)
+
+    for user in users:
+        if user.get("username") == buy_user:
+            wallet_money = user.get("wallet")
+            break
+
+    print("Wallet:", wallet_money)
+    if wallet_money>=product_price:
+        return {"Message":"Purchase Success"},200
+    else:
+        return{"Message":"Purchase Failed"},400
+    
 if __name__ == "__main__":
     app.run(debug=True)
     
