@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import request
+from flask import render_template
 from markupsafe import escape
 import requests
 import json
@@ -7,7 +8,6 @@ import json
 app = Flask(__name__)
 
 def load_users():
-
     with open("data/users.json",'r') as userfile:
         users = json.load(userfile)   
     return users
@@ -17,7 +17,18 @@ def load_products():
             products =json.load(productfile)
             return products
 
-@app.route("/")
+@app.route("/login-ui", methods=["GET","POST"])
+def login_ui():
+    if request.method=="GET":
+        return render_template("login.html")
+    username = request.form.get("username")
+    password = request.form.get("password")
+    # print(username,password)
+    response,status = validate_login(username,password)
+
+    print(response)
+    return render_template("login.html",message = response["message"])
+
 def home():
     # with open("data/users.json",'r') as userfile:
     #     users = json.load(userfile)
@@ -26,25 +37,33 @@ def home():
     return f"Hello, {escape(username2)}!"
 
 @app.route("/login", methods=["POST"])
-
-def server_login():
+def server_api():
     # for debug
     # users = json.load(userfile)
     #login data
-    users=load_users()
+    
     data = request.get_json()
+    # print(">> In server API")
     if data is None:
         return {
-            "message":"User list empty"
+            "message":"Login Field Empty"
         },401
     login_username = data.get("username")
     login_password = data.get("password")
+    return validate_login(login_username,login_password)
     
-    if login_username=="":
+def validate_login(login_username,login_password):
+    # print(">> in validate login",login_username,login_password)
+    users=load_users()
+    if users is None:
+        return {
+            "message":"User list empty"
+        },401
+    if not login_username:
         return {"message":"Missing Username"},400
-    if login_password=="":
+    if not login_password:
         return {"message":"Missing Password"},400
-
+     
     for user in users:
         if user.get("username")==login_username and user.get("password")!=login_password:
             return {
@@ -62,6 +81,11 @@ def server_login():
     return {
         "message": "Incorrect Username and Password"
         },401
+
+
+
+    # return login_username,login_password
+    
 
 @app.route("/products", methods=["POST"])
 
