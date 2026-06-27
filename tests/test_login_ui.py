@@ -1,15 +1,15 @@
 from playwright.sync_api import Page
 
-def test_login_page_loads(page:Page):
-    page.goto("http://127.0.0.1:5000/login-ui")
+def test_login_page_loads(page:Page,app_url):
+    page.goto(f"{app_url}/login-ui")
     assert page.title() is not None
 
 
 
 
-def test_valid_login(page: Page):
+def test_valid_login(page: Page,app_url):
 
-    page.goto("http://127.0.0.1:5000/login-ui")
+    page.goto(f"{app_url}/login-ui")
 
     page.fill("#username", "rocky")
 

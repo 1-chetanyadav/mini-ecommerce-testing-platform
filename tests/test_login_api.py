@@ -1,66 +1,59 @@
 import requests
 import json
 
-def login(payload):
-    #   debug
-    # print("payload:",payload)
-    return requests.post("http://127.0.0.1:5000/login",json=payload)
+def login(payload,app_url):
 
-def test_empty_username():
+    return requests.post(f"{app_url}/login",json=payload)
+
+def test_empty_username(app_url):
     test_data = {
         "username":"",
         "password":"rocky123"
         }
-    response = login(test_data)
+    response = login(test_data,app_url)
     assert response.status_code == 400
-test_empty_username()    
 
-def test_empty_password():
+def test_empty_password(app_url):
     test_data = {
         "username":"rocky",
         "password":""
         }
-    response = login(test_data)
+    response = login(test_data,app_url)
     assert response.status_code == 400
-test_empty_password()
 
 
-def test_invalid_username():
+def test_invalid_username(app_url):
     test_data = {
         "username":"rrocky",
         "password":"rocky123"
     }
-    response = login(test_data)
+    response = login(test_data,app_url)
     assert response.status_code == 401
-test_invalid_username()
 
-def test_invalid_password():
+def test_invalid_password(app_url):
     
     test_data = {
         "username":"rocky",
         "password":"rrocky123"
     }
-    response = login(test_data)
+    response = login(test_data,app_url)
     assert response.status_code == 401
-test_invalid_password()
 
-def test_invalid_user_pass():
+def test_invalid_user_pass(app_url):
     
     test_data = {
         "username":"rrocky",
         "password":"rrocky123"
     }
-    response = login(test_data)
+    response = login(test_data,app_url)
     assert response.status_code == 401
-test_invalid_user_pass()
 
-def test_valid_user_pass():
+def test_valid_user_pass(app_url):
     
 
     test_data = {
         "username":"rocky",
         "password":"rocky123"
     }
-    response = login(test_data)
+    response = login(test_data,app_url)
     assert response.status_code == 200
-test_valid_user_pass()

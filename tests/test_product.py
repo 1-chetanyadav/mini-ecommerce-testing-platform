@@ -1,26 +1,23 @@
 import requests
 
-def product(payload):
-    return requests.post("http://127.0.0.1:5000/products",json=payload)
+def product(payload,app_url):
+    return requests.post(f"{app_url}/products",json=payload)
 
 
-def test_get_product():
+def test_get_product(app_url):
     test_data = {"product_id":2}
-    # print(test_data)
-    response = product(test_data)
+    # print(test_data,app_url)
+    response = product(test_data,app_url)
     # print(response)
     assert response.status_code == 200
-test_get_product()
 
-def test_invalid_product():
+def test_invalid_product(app_url):
     test_data = {"product_id":3}
-    response = product(test_data)
+    response = product(test_data,app_url)
     assert response.status_code == 400
-test_invalid_product()
 
-def test_count_product():
+def test_count_product(app_url):
     test_data = {"product_id":2}
-    response = product(test_data)
+    response = product(test_data,app_url)
     assert response.status_code == 200
-test_count_product()
 

@@ -1,16 +1,14 @@
 import requests
 
-def product(payload):
-    return requests.post("http://127.0.0.1:5000/order",json=payload)
+def product(payload,app_url):
+    return requests.post(f"{app_url}/order",json=payload)
 
-def test_buy_success():
+def test_buy_success(app_url):
     test_data = {"username":"rocky","product_id":1}
-    response = product(test_data)
+    response = product(test_data,app_url)
     assert response.status_code == 200
-test_buy_success()
 
-def test_buy_fail():
+def test_buy_fail(app_url):
     test_data = {"username":"jeetu","product_id":2}
-    response = product(test_data)
+    response = product(test_data,app_url)
     assert response.status_code == 400
-test_buy_fail()
