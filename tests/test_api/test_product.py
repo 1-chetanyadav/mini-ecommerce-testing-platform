@@ -1,8 +1,7 @@
 import requests
 import pytest
+from utilities.api_helper import product_request
 
-def product(payload,app_url):
-    return requests.post(f"{app_url}/products",json=payload)
 
 
 @pytest.mark.parametrize(
@@ -12,9 +11,9 @@ def product(payload,app_url):
 
 def test_product(app_url,product_id,status_code):
     test_data = {"product_id":product_id}
-    # print(test_data,app_url)
-    response = product(test_data,app_url)
-    # print(response)
+    print(test_data,app_url)
+    response = product_request(test_data,app_url)
+    print(response)
     assert response.status_code == status_code
 
 

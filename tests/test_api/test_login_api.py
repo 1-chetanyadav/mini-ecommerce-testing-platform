@@ -1,10 +1,7 @@
 import requests
 import pytest
+from utilities.api_helper import login_request
 
-
-def login(payload,app_url):
-
-    return requests.post(f"{app_url}/login",json=payload)
 
 
 @pytest.mark.parametrize(
@@ -24,11 +21,11 @@ def test_invalid_login(app_url,username,password,status_code):
       "username":username,
         "password":password
         }
-    response = login(test_data,app_url)
+    response = login_request(test_data,app_url)
     assert response.status_code == status_code
 
 def test_valid_user_pass(app_url,valid_user):
 
     test_data = valid_user
-    response = login(test_data,app_url)
+    response = login_request(test_data,app_url)
     assert response.status_code == 200
