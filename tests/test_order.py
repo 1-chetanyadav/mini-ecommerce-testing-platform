@@ -1,14 +1,15 @@
 import requests
+import pytest
 
 def product(payload,app_url):
     return requests.post(f"{app_url}/order",json=payload)
 
-def test_buy_success(app_url):
-    test_data = {"username":"rocky","product_id":1}
-    response = product(test_data,app_url)
-    assert response.status_code == 200
+@pytest.mark.parametrize("username,product_id,status_code",[("rocky",1,200),("jeetu",2,400)])
 
-def test_buy_fail(app_url):
-    test_data = {"username":"jeetu","product_id":2}
+
+
+def test_buys(app_url,username,product_id,status_code):
+    test_data = {"username":username,"product_id":product_id}
     response = product(test_data,app_url)
-    assert response.status_code == 400
+    assert response.status_code == status_code
+

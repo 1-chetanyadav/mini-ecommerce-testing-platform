@@ -1,7 +1,7 @@
 from playwright.sync_api import Page
 
-def test_product_page_load(page:Page):
-    page.goto("http://127.0.0.1:5000/products")
+def test_product_page_load(page:Page,app_url):
+    page.goto(app_url)
     assert page.title() is not None
     
 def test_get_product(page:Page,app_url):
