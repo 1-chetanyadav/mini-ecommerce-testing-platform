@@ -1,11 +1,11 @@
 [
   {
-    "productid": 1,
+    "product_id": 1,
     "name": "Keyboard",
     "price": 1400
   },
   {
-    "productid": 2,
+    "product_id": 2,
     "name": "Mouse",
     "price": 5000
   }
